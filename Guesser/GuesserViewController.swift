@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FirstViewController: UIViewController {
+class GuesserViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
