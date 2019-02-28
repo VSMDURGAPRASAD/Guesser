@@ -9,12 +9,49 @@
 import UIKit
 
 class StatisticsViewController: UIViewController {
+    
+    
+    @IBOutlet weak var minLBL: UILabel!
+    @IBOutlet weak var maxLBL: UILabel!
+    @IBOutlet weak var meanLBL: UILabel!
+    @IBOutlet weak var stddevLBL: UILabel!
+    @IBAction func clearBTN(_ sender: Any) {
+        minLBL.text = "0"
+        maxLBL.text = "0"
+        meanLBL.text = "0"
+        stddevLBL.text = "0"
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
     }
+    override func viewWillAppear(_ animated: Bool) {
+        labels()
+    }
+    func labels(){
+        minLBL.text = String(Guesser.shared.minimumNumAttempts())
+        maxLBL.text = String(Guesser.shared.maximumNumAttempts())
+        var incrementedValue = 0
+        for i in 0..<Guesser.shared.numGuesses(){
+            incrementedValue += Guesser.shared.guess(index: i).numAttemptsRequired
+        }
+        
+        let meanValue = Double(incrementedValue)/Double(Guesser.shared.numGuesses())
+        meanLBL.text = "\(meanValue)"
+        
+        var sumTotal = 0.0
+        for i in 0..<Guesser.shared.numGuesses(){
+            sumTotal += pow(Double(Guesser.shared.guess(index: i).numAttemptsRequired) - meanValue, 2)
+        }
+        
+        stddevLBL.text = "\(sumTotal/Double(Guesser.shared.numGuesses()))"
+        
+    }
+    
+
     
 
     /*
